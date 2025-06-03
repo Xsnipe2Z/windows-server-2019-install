@@ -3,7 +3,7 @@
 set -e  # Exit on any error
 
 # Update + install required tools
-apt update && apt install -y grub2 wimtools ntfs-3g rsync wget gdisk parted
+apt install -y grub2 wimtools ntfs-3g rsync wget gdisk parted
 
 # Get disk size and calculate partition sizes
 disk_size_gb=$(parted /dev/sda --script print | awk '/^Disk \/dev\/sda:/ {print int($3)}')
@@ -69,4 +69,4 @@ echo 'add virtio /virtio_drivers' > cmd.txt
 wimlib-imagex update boot.wim 2 < cmd.txt
 
 # Done - Reboot
-reboot=
+reboot
