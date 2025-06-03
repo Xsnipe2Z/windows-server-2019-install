@@ -2,31 +2,7 @@
 
 set -e  # Exit on any error
 
-# Update + install required tools
-apt install -y grub2 wimtools ntfs-3g rsync wget gdisk parted
 
-# Get disk size and calculate partition sizes
-disk_size_gb=$(parted /dev/sda --script print | awk '/^Disk \/dev\/sda:/ {print int($3)}')
-disk_size_mb=$((disk_size_gb * 1024))
-part_size_mb=$((disk_size_mb / 4))
-
-# Wipe and re-partition the disk
-parted /dev/sda --script mklabel gpt
-parted /dev/sda --script mkpart primary ntfs 1MB ${part_size_mb}MB
-parted /dev/sda --script mkpart primary ntfs ${part_size_mb}MB $((2 * part_size_mb))MB
-
-# Wait for kernel to catch up
-sleep 5
-partprobe /dev/sda
-
-# Format the partitions
-mkfs.ntfs -f /dev/sda1
-mkfs.ntfs -f /dev/sda2
-
-# Fix GPT with gdisk (optional and dangerous — be cautious!)
-echo -e "r\ng\np\nw\nY\n" | gdisk /dev/sda
-
-# Mount system partition
 mount /dev/sda1 /mnt
 
 # Mount second partition to copy ISO content
