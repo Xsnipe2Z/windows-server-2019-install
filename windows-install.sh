@@ -20,7 +20,7 @@ sleep 5
 
 partprobe /dev/sda
 
-sleep 5
+sleep 15
 
 mkfs.ntfs -f /dev/sda1
 mkfs.ntfs -f /dev/sda2
