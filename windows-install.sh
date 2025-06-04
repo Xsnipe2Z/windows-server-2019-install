@@ -20,13 +20,22 @@ sleep 5
 
 partprobe /dev/sda
 
-sleep 15
+sleep 5
+
+
 
 mkfs.ntfs -f /dev/sda1
 mkfs.ntfs -f /dev/sda2
 
 
 echo -e "r\ng\np\nw\nY\n" | gdisk /dev/sda
+
+
+sleep 5
+
+partprobe /dev/sda
+
+sleep 5
 
 
 mount /dev/sda1 /mnt
